@@ -5,51 +5,51 @@ using System.Windows.Forms;
 
 namespace AnkiToSuperMemoConverter {
     public partial class AnkiToSuperMemo : Form {
-        private string file;
-        private string path;
-        SuperMemoCardBuilder superMemo;
+        private string _file;
+        private string _path;
+        private readonly SuperMemoCardBuilder _superMemo;
 
         public AnkiToSuperMemo() {
             InitializeComponent();
-            superMemo = new SuperMemoCardBuilder();
+            _superMemo = new SuperMemoCardBuilder();
         }
 
-        private void pickFileButton_Click(object sender, EventArgs e) {
+        private void PickFileButton_Click(object sender, EventArgs e) {
             DialogResult result = getFileDialog.ShowDialog();
             if (result == DialogResult.OK) {
-                file = getFileDialog.FileName;
-                if( !file.Contains(".txt") ) {
-                    Confirmation confirmation = new Confirmation(0, "You can only use files with TXT extension.");
+                _file = getFileDialog.FileName;
+                if( !_file.Contains(Consts.AllowedExtension) ) {
+                    Confirmation confirmation = new Confirmation(0, Consts.ErrorOnlyTxtFiles);
                     confirmation.Show();
                     return;
                 }
-                fileNameText.Text = file;
+                fileNameText.Text = _file;
                 return;
             }
-            file = null;
+            _file = null;
         }
 
-        private void basedOnTextCreateAFile() {
-            if( path == null) {
-                Confirmation confirmation = new Confirmation(0, "You have not provided destination path.");
+        private void BasedOnTextCreateAFile() {
+            if( _path == null) {
+                Confirmation confirmation = new Confirmation(0, Consts.ErrorNoDestinationPath);
                 confirmation.Show();
                 return; 
             }
-            int i = Directory.GetFiles(path).Length;
-            if (file != null) {
+            int i = Directory.GetFiles(_path).Length;
+            if (_file != null) {
                 try {
-                    string text = File.ReadAllText(file);
+                    string text = File.ReadAllText(_file);
                     AnkiFieldsExtractor extractor = new AnkiFieldsExtractor(text);
-                    ArrayList QandAs = extractor.getQuestionsAndAnswersPair();
-                    foreach (ArrayList el in QandAs) {
+                    ArrayList qandAs = extractor.GetQuestionsAndAnswersPair();
+                    foreach (ArrayList el in qandAs) {
                         if (el.Count >= 2) {
-                            string xmlCardText = superMemo.getXmlString((string)el[0], (string)el[1]);
-                            string fileName = getValidFileName(i);
+                            string xmlCardText = _superMemo.GetXmlString((string)el[0], (string)el[1]);
+                            string fileName = GetValidFileName(i);
                             File.WriteAllText(fileName, xmlCardText);
                             i++;
                         }
                     }
-                    generateCourseFile(i);
+                    GenerateCourseFile(i);
                 }
                 catch (IOException) {
 
@@ -59,35 +59,35 @@ namespace AnkiToSuperMemoConverter {
             }
         }
 
-        private void generateCourseFile(int numberOfFiles) {
-            string courseString = superMemo.getCourseXmlString(numberOfFiles);
-            string fileName = path + "\\course.xml";
+        private void GenerateCourseFile(int numberOfFiles) {
+            string courseString = _superMemo.GetCourseXmlString(numberOfFiles);
+            string fileName = _path + Consts.CourseFileName;
             File.WriteAllText(fileName, courseString);
         }
 
-        private string getValidFileName(int i) {
-            string fullFileName = path + "\\item";
+        private string GetValidFileName(int i) {
+            string fullFileName = _path + Consts.SuperMemoItemFileName;
             string number = i.ToString();
             int numberOfDigits = number.Length;
             int numberOfZeroes = 5 - numberOfDigits;
             for (int j = 0; j < numberOfZeroes; j++) {
                 fullFileName = fullFileName + "0";
             }
-            fullFileName = fullFileName + i + ".xml";
+            fullFileName = fullFileName + i + Consts.SuperMemoFileExtension;
             return fullFileName;
         }
 
-        private void destinationFolderButton_Click(object sender, EventArgs e) {
+        private void DestinationFolderButton_Click(object sender, EventArgs e) {
             DialogResult result = folderBrowserDialog.ShowDialog();
             if (result == DialogResult.OK) {
                 string selectedPath = folderBrowserDialog.SelectedPath;
                 pathBox.Text = selectedPath;
-                path = selectedPath;
+                _path = selectedPath;
             }
         }
 
-        private void generateButton_Click(object sender, EventArgs e) {
-            basedOnTextCreateAFile();
+        private void GenerateButton_Click(object sender, EventArgs e) {
+            BasedOnTextCreateAFile();
         }
     }
 }

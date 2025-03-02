@@ -1,0 +1,6 @@
+#separator:tab
+#html:true
+#tags column:3
+przekorny&nbsp;	contrary&nbsp;<br>	
+dwadzieścia kilka&nbsp;<br>	twenty-odd	
+

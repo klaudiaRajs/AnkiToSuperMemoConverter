@@ -1,52 +1,49 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+ using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace AnkiToSuperMemoConverter {
     class AnkiFieldsExtractor {
 
-        private string questionsAnswersText; 
+        private readonly string _questionsAnswersText; 
 
         public AnkiFieldsExtractor(string questionsAnswers) {
-            questionsAnswersText = questionsAnswers; 
+            _questionsAnswersText = questionsAnswers; 
         }
 
-        public ArrayList getQuestionsAndAnswersPair() {
+        public ArrayList GetQuestionsAndAnswersPair() {
             ArrayList questionsAnswersPairs = new ArrayList(); 
-            Array questionsAndAnswers = getArrayWithQuestionsAndAnswers(); 
+            Array questionsAndAnswers = GetArrayWithQuestionsAndAnswers(); 
             foreach( string qa in questionsAndAnswers) {
-                string betterQa = removeUnwantedCharacters(qa);
-                ArrayList qas = removeEmptyFields(Regex.Split(betterQa, "\t"));
+                string betterQa = RemoveUnwantedCharacters(qa);
+                ArrayList qas = RemoveEmptyFields(Regex.Split(betterQa, Consts.TabCharacter));
                 questionsAnswersPairs.Add(qas); 
             }
             return questionsAnswersPairs;
         }
 
-        private string removeUnwantedCharacters(string qa) {
+        private string RemoveUnwantedCharacters(string qa) {
             string betterQa = qa; 
-            while( betterQa.IndexOf("&nbsp") != -1) {
-                betterQa = qa.Replace("&nbsp", "");
+            while( betterQa.IndexOf(Consts.SpaceCharacter, StringComparison.Ordinal) != -1) {
+                betterQa = qa.Replace(Consts.SpaceCharacter, string.Empty);
             }
-            while( betterQa.IndexOf("<div>") != -1) {
-                betterQa = betterQa.Replace("<div>", "");
+            while( betterQa.IndexOf(Consts.HtmlDivCharacter, StringComparison.Ordinal) != -1) {
+                betterQa = betterQa.Replace(Consts.HtmlDivCharacter, string.Empty);
             }
-            while (betterQa.IndexOf("</div>") != -1) {
-                betterQa = betterQa.Replace("</div>", "");
+            while (betterQa.IndexOf(Consts.HtmlDivEndCharacter, StringComparison.Ordinal) != -1) {
+                betterQa = betterQa.Replace(Consts.HtmlDivEndCharacter, string.Empty);
             }
-            while (betterQa.IndexOf("<br />") != -1) {
-                betterQa = betterQa.Replace("<br />", "");
+            while (betterQa.IndexOf(Consts.HtmlLineCharacter, StringComparison.Ordinal) != -1) {
+                betterQa = betterQa.Replace(Consts.HtmlLineCharacter, string.Empty);
             }
-            while (betterQa.IndexOf(";") != -1) {
-                betterQa = betterQa.Replace(";", "");
+            while (betterQa.IndexOf(Consts.Semicolon, StringComparison.Ordinal) != -1) {
+                betterQa = betterQa.Replace(Consts.Semicolon, string.Empty);
             }
             return betterQa; 
         }
 
-        private ArrayList removeEmptyFields(string[] questionsAnswers) {
+        private ArrayList RemoveEmptyFields(string[] questionsAnswers) {
             ArrayList questionsAndAnswersWithoutEmptyFields = new ArrayList(); 
             foreach( string qa in questionsAnswers) {
                 if( qa.Length != 0) {
@@ -56,8 +53,8 @@ namespace AnkiToSuperMemoConverter {
             return questionsAndAnswersWithoutEmptyFields; 
         }
 
-        private Array getArrayWithQuestionsAndAnswers() {
-            string[] lines = Regex.Split(questionsAnswersText, "\n"); 
+        private Array GetArrayWithQuestionsAndAnswers() {
+            string[] lines = Regex.Split(_questionsAnswersText, Consts.NewLineCharacter); 
             if( lines.Count() != 0) {
                 return lines; 
             }

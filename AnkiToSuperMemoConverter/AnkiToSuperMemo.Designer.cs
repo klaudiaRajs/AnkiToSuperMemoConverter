@@ -84,7 +84,7 @@
             this.pickFileButton.TabIndex = 4;
             this.pickFileButton.Text = "Load!";
             this.pickFileButton.UseVisualStyleBackColor = true;
-            this.pickFileButton.Click += new System.EventHandler(this.pickFileButton_Click);
+            this.pickFileButton.Click += new System.EventHandler(this.PickFileButton_Click);
             // 
             // destinationFolderButton
             // 
@@ -94,7 +94,7 @@
             this.destinationFolderButton.TabIndex = 5;
             this.destinationFolderButton.Text = "Choose!";
             this.destinationFolderButton.UseVisualStyleBackColor = true;
-            this.destinationFolderButton.Click += new System.EventHandler(this.destinationFolderButton_Click);
+            this.destinationFolderButton.Click += new System.EventHandler(this.DestinationFolderButton_Click);
             // 
             // generateButton
             // 
@@ -104,7 +104,7 @@
             this.generateButton.TabIndex = 6;
             this.generateButton.Text = "Generate";
             this.generateButton.UseVisualStyleBackColor = true;
-            this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
+            this.generateButton.Click += new System.EventHandler(this.GenerateButton_Click);
             // 
             // AnkiToSuperMemo
             // 

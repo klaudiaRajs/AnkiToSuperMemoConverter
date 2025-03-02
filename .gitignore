@@ -1,0 +1,6 @@
+﻿/AnkiToSuperMemoConverter/obj/*
+/AnkiToSuperMemoConverter/bin/*
+/AnkiToSuperMemoConverter/.vs/*
+/.idea/*
+/.vs/*
+*.user
