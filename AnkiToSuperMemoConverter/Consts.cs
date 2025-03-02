@@ -38,7 +38,7 @@ public static class Consts
     public const string Semicolon = ";"; 
     public const string SpaceCharacter = "&nbsp";
     public const string HtmlLineCharacter = "<br />"; 
-    public const string HtmlDivCharacter = "<div>";
+    public const string HtmlDivStartCharacter = "<div>";
     public const string HtmlDivEndCharacter = "</div>";
     
 }

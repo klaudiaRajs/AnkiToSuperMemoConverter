@@ -4,5 +4,8 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
+    <Company />
+    <Product />
+    <Product />
   </PropertyGroup>
 </Project>

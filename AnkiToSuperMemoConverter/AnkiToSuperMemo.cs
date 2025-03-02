@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -40,8 +40,8 @@ namespace AnkiToSuperMemoConverter {
                 try {
                     string text = File.ReadAllText(_file);
                     AnkiFieldsExtractor extractor = new AnkiFieldsExtractor(text);
-                    ArrayList qandAs = extractor.GetQuestionsAndAnswersPair();
-                    foreach (ArrayList el in qandAs) {
+                    List<List<string>> qandAs = extractor.GetQuestionsAndAnswersPair();
+                    foreach (List<string> el in qandAs) {
                         if (el.Count >= 2) {
                             string xmlCardText = _superMemo.GetXmlString((string)el[0], (string)el[1]);
                             string fileName = GetValidFileName(i);
